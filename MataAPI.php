@@ -11,6 +11,10 @@ class MataAPI extends CComponent {
 		return $this->callURL("GET", $url, $params);
 	}
 
+	public function post($url, array $params = array()) {
+		return $this->callURL("POST", $url, $params);
+	}
+
 	private function callURL($method, $url, $data = false) {
 		$curl = curl_init();
 		switch ($method) {
