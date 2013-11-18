@@ -7,7 +7,7 @@ class MataAPI extends CComponent {
             throw new CException("Curl is required for " . __CLASS__ . " to function");
     }
 
-    public function get($url, array $params = array(), $authentication) {
+    public function get($url, array $params = array(), $authentication = null) {
         return $this->callURL("GET", $url, $params, $authentication);
     }
 
@@ -15,7 +15,7 @@ class MataAPI extends CComponent {
         return $this->callURL("POST", $url, $params);
     }
 
-    private function callURL($method, $url, $data = false, $authentication) {
+    private function callURL($method, $url, $data = false, $authentication = null) {
         $curl = curl_init();
         switch ($method) {
             case "POST":
