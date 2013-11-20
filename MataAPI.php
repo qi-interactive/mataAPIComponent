@@ -16,13 +16,14 @@ class MataAPI extends CComponent {
     }
 
     private function callURL($method, $url, $data = false, $authentication = null) {
+                      
         $curl = curl_init();
         switch ($method) {
             case "POST":
                 curl_setopt($curl, CURLOPT_POST, 1);
 
                 if ($data)
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                    curl_setopt($curl, CURLOPT_POSTFIELDS,  http_build_query($data, '', '&'));
                 break;
             case "PUT":
                 curl_setopt($curl, CURLOPT_PUT, 1);
@@ -36,11 +37,11 @@ class MataAPI extends CComponent {
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($curl, CURLOPT_USERPWD, $authentication);
         }
-
+        
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
+        
         return json_decode(curl_exec($curl));
     }
 
