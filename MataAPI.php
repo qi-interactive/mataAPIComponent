@@ -11,8 +11,8 @@ class MataAPI extends CComponent {
         return $this->callURL("GET", $url, $params, $authentication);
     }
 
-    public function post($url, array $params = array()) {
-        return $this->callURL("POST", $url, $params);
+    public function post($url, array $params = array(), $authentication = null) {
+        return $this->callURL("POST", $url, $params, $authentication);
     }
 
     private function callURL($method, $url, $data = false, $authentication = null) {
