@@ -41,7 +41,6 @@ class MataAPI extends CComponent {
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_SSLVERSION,3);
         
         $response = curl_exec($curl);
         $responseJSON = json_decode($response);
