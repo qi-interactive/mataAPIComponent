@@ -16,7 +16,7 @@ class MataAPI extends CComponent {
     }
 
     private function callURL($method, $url, $data = false, $authentication = null) {
-      
+
         $curl = curl_init();
         switch ($method) {
             case "POST":
@@ -43,10 +43,13 @@ class MataAPI extends CComponent {
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         
         $response = curl_exec($curl);
-        $responseJSON = json_decode($response);
+        
+        $responseJSON = json_decode($response, true);        
         
         if ($responseJSON == null)
             throw new CHttpException(500, "Could not perform query to Web Service: " . $response);
+        
+        $responseJSON = (object) ArrayHelper::htmlEncode($responseJSON, true, true);
 
         return $responseJSON;
     }
