@@ -44,20 +44,14 @@ class MataAPI extends CComponent {
         
         $response = curl_exec($curl);
 
+        $responseJSON = json_decode($response, false);
+
         if($encode == true) {
-            $responseJSON = json_decode($response, true);
-            $responseJSON = (object) ArrayHelper::htmlEncode($responseJSON, true, true);
-        }
-        else {
-            $responseJSON = json_decode($response);  
-        }
-        
-              
+            $responseJSON = (object) ArrayHelper::htmlEncode($responseJSON, true, false);
+        }              
         
         if ($responseJSON == null)
             throw new CHttpException(500, "Could not perform query to Web Service: " . $response);
-
-        
 
         return $responseJSON;
     }
