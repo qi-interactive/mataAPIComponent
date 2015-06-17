@@ -7,15 +7,15 @@ class MataAPI extends CComponent {
             throw new CException("Curl is required for " . __CLASS__ . " to function");
     }
 
-    public function get($url, array $params = array(), $authentication = null) {
-        return $this->callURL("GET", $url, $params, $authentication);
+    public function get($url, array $params = array(), $authentication = null, $encode = true) {
+        return $this->callURL("GET", $url, $params, $authentication, $encode);
     }
 
-    public function post($url, array $params = array(), $authentication = null) {
-        return $this->callURL("POST", $url, $params, $authentication);
+    public function post($url, array $params = array(), $authentication = null, $encode = true) {
+        return $this->callURL("POST", $url, $params, $authentication, $encode);
     }
 
-    private function callURL($method, $url, $data = false, $authentication = null) {
+    private function callURL($method, $url, $data = false, $authentication = null, $encode = true) {
 
         $curl = curl_init();
         switch ($method) {
@@ -43,13 +43,21 @@ class MataAPI extends CComponent {
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         
         $response = curl_exec($curl);
+
+        if($encode == true) {
+            $responseJSON = json_decode($response, true);
+            $responseJSON = (object) ArrayHelper::htmlEncode($responseJSON, true, true);
+        }
+        else {
+            $responseJSON = json_decode($response);  
+        }
         
-        $responseJSON = json_decode($response, true);        
+              
         
         if ($responseJSON == null)
             throw new CHttpException(500, "Could not perform query to Web Service: " . $response);
+
         
-        $responseJSON = (object) ArrayHelper::htmlEncode($responseJSON, true, true);
 
         return $responseJSON;
     }
