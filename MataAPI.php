@@ -37,19 +37,15 @@ class MataAPI extends CComponent {
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($curl, CURLOPT_USERPWD, $authentication);
         }
-        
+
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        
+
         $response = curl_exec($curl);
 
         $responseJSON = json_decode($response, false);
 
-        if($encode == true) {
-            $responseJSON = (object) ArrayHelper::htmlEncode($responseJSON, true, false);
-        }              
-        
         if ($responseJSON == null)
             throw new CHttpException(500, "Could not perform query to Web Service: " . $response);
 
