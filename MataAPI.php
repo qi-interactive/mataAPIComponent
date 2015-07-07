@@ -7,16 +7,16 @@ class MataAPI extends CComponent {
             throw new CException("Curl is required for " . __CLASS__ . " to function");
     }
 
-    public function get($url, array $params = array(), $authentication = null) {
-        return $this->callURL("GET", $url, $params, $authentication);
+    public function get($url, array $params = array(), $authentication = null, $encode = false) {
+        return $this->callURL("GET", $url, $params, $authentication, $encode);
     }
 
-    public function post($url, array $params = array(), $authentication = null) {
-        return $this->callURL("POST", $url, $params, $authentication);
+    public function post($url, array $params = array(), $authentication = null, $encode = false) {
+        return $this->callURL("POST", $url, $params, $authentication, $encode);
     }
 
-    private function callURL($method, $url, $data = false, $authentication = null) {
-      
+    private function callURL($method, $url, $data = false, $authentication = null, $encode = false) {
+
         $curl = curl_init();
         switch ($method) {
             case "POST":
@@ -37,14 +37,15 @@ class MataAPI extends CComponent {
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($curl, CURLOPT_USERPWD, $authentication);
         }
-        
+
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        
+
         $response = curl_exec($curl);
-        $responseJSON = json_decode($response);
-        
+
+        $responseJSON = json_decode($response, false);
+
         if ($responseJSON == null)
             throw new CHttpException(500, "Could not perform query to Web Service: " . $response);
 
