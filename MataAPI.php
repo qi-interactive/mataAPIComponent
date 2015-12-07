@@ -47,7 +47,7 @@ class MataAPI extends CComponent {
         $responseJSON = json_decode($response, false);
 
         if ($responseJSON == null)
-            throw new CHttpException(500, "Could not perform query to Web Service: " . $response);
+            throw new CHttpException(500, sprintf("Could not perform query to Web Service for %s, \n\rResponse: %s", $url, $response));
 
         return $responseJSON;
     }
