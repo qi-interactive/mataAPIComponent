@@ -7,15 +7,15 @@ class MataAPI extends CComponent {
             throw new CException("Curl is required for " . __CLASS__ . " to function");
     }
 
-    public function get($url, array $params = array(), $authentication = null, $encode = false) {
-        return $this->callURL("GET", $url, $params, $authentication, $encode);
+    public function get($url, array $params = array(), $authentication = null, $encode = false, $parseJson = true) {
+        return $this->callURL("GET", $url, $params, $authentication, $encode, $parseJson);
     }
 
-    public function post($url, array $params = array(), $authentication = null, $encode = false) {
-        return $this->callURL("POST", $url, $params, $authentication, $encode);
+    public function post($url, array $params = array(), $authentication = null, $encode = false, $parseJson = true) {
+        return $this->callURL("POST", $url, $params, $authentication, $encode, $parseJson);
     }
 
-    private function callURL($method, $url, $data = false, $authentication = null, $encode = false) {
+    private function callURL($method, $url, $data = false, $authentication = null, $encode = false, $parseJson = true) {
 
         $curl = curl_init();
         switch ($method) {
@@ -43,6 +43,9 @@ class MataAPI extends CComponent {
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
         $response = curl_exec($curl);
+
+        if($parseJson == false)
+            return $response;
 
         $responseJSON = json_decode($response, false);
 
